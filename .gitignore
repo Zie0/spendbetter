@@ -1,1 +1,4 @@
 *.csv
+*.pyc
+.~lock.credit.csv#
+
