@@ -44,8 +44,9 @@ class Statement:
         except Exception as E:
             print("Could not parse date or month out of range: {0}\nPlease Enter a month in 'YYYY-mm' format".format(E))
 
-#    def get_cat(self):
-
+# Next up:
+# Add a method that groups by memo
+# add a method that shows the sum and sum without an array of spending categories that have the potential to be deducted.
 
 if __name__=="__main__":
     #output the number of rows
