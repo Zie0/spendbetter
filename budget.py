@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 import datetime as dt
+import memo_codes as mc
 
 class Statement:
     def __init__(self,csvfile,acct='c'):
@@ -26,7 +27,10 @@ class Statement:
         return data
 
     def clean_credit_memo(self,df):
-        df['Memo'] = df['Memo'].apply(lambda x: x.split(";")[1].strip() if str.isdigit(x.split(";")[1].strip()) else str(0))
+        # This function cleans the excessive strings from the Memo field.
+        # Once the memo code string is left it is converted to a category
+        # using the credit memo codes in memo_codes module
+        df['Memo'] = df['Memo'].apply(lambda x: mc.credit_mc[x.split(";")[1].strip()] if str.isdigit(x.split(";")[1].strip()) else mc.credit_mc[str(0)])
         return df
 
     def clean_debit_memo(self,df):
@@ -39,6 +43,9 @@ class Statement:
             return self.statement[parsed]
         except Exception as E:
             print("Could not parse date or month out of range: {0}\nPlease Enter a month in 'YYYY-mm' format".format(E))
+
+#    def get_cat(self):
+
 
 if __name__=="__main__":
     #output the number of rows
