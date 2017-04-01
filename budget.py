@@ -8,6 +8,10 @@ import memo_codes as mc
 class Statement:
     def __init__(self,csvfile,acct='c'):
         self.statement = self.load_csv(csvfile,acct)
+        self.slice = self.statement
+
+    def reset_slice(self):
+        self.slice = self.statement
 
     def load_csv(self,csvfile,acct='c'):
         # Read the csv
@@ -40,12 +44,22 @@ class Statement:
     def get_month(self,mon):
         try:
             parsed = dt.datetime.strptime(mon, "%Y-%m").strftime("%Y-%m")
-            return self.statement[parsed]
+            self.slice = self.statement[parsed]
+            return self.slice
         except Exception as E:
             print("Could not parse date or month out of range: {0}\nPlease Enter a month in 'YYYY-mm' format".format(E))
 
+    def get_stats(self,mon=None):
+        if mon is not None:
+            df = self.get_month(mon)
+            return df.groupby(['Memo'])['Amount'].agg([np.sum, np.mean, np.std])
+        else:
+            return self.slice.groupby(['Memo'])['Amount'].agg([np.sum, np.mean, np.std])
+
+
+
 # Next up:
-# Add a method that groups by memo
+# finish get_stats
 # add a method that shows the sum and sum without an array of spending categories that have the potential to be deducted.
 
 if __name__=="__main__":
