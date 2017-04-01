@@ -56,8 +56,6 @@ class Statement:
         else:
             return self.slice.groupby(['Memo'])['Amount'].agg([np.sum, np.mean, np.std])
 
-
-
 # Next up:
 # finish get_stats
 # add a method that shows the sum and sum without an array of spending categories that have the potential to be deducted.
